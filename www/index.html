@@ -1,46 +1,45 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title>Storage Example</title>
-
-    <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+    <title>Local Storage Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, 
+        maximum-scale=1.0" />
     <script type="text/javascript" charset="utf-8">
-
-    // Wait for Cordova to load
-    //
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-    // Cordova is ready
-    //
-    function onDeviceReady() {
-        var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
-        db.transaction(populateDB, errorCB, successCB);
+    function onBodyLoad() {
+        localStorage.setItem("key1", "value1");
+        
+ 
+        // value is now equal to "value"
+        localStorage.setItem("key2", "value2");
+        localStorage.setItem("key3", "value3");
     }
-
-    // Populate the database 
-    //
-    function populateDB(tx) {
-         tx.executeSql('DROP TABLE IF EXISTS DEMO');
-         tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
-         tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
-         tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
+    
+    
+    function removeKey(){
+        localStorage.removeItem("key1");
     }
-
-    // Transaction error callback
-    //
-    function errorCB(tx, err) {
-        alert("Error processing SQL: "+err);
+    
+    function clearStorage(){
+        localStorage.clear();
     }
-
-    // Transaction success callback
-    //
-    function successCB() {
-        alert("success!");
+    
+    function viewStorage(){
+        var keyName, value;
+        for (i=0; i< localStorage.length; i++){
+            keyName = localStorage.key(i);
+            value = localStorage.getItem(keyName);
+            document.getElementById("list").innerHTML += keyName +" " + value +"\n";
+        }
     }
-
+    
     </script>
   </head>
-  <body>
+  <body onload="onBodyLoad();">
     <h1>Example</h1>
-    <p>Database</p>
+    <p>localStorage</p>
+    <button onclick="removeKey();" value="remove key">remove key1</button>
+    <button onclick="clearStorage();">clear</button>
+    <button onclick="viewStorage();">view localStorage</button>
+    <div id="list"></div>
   </body>
 </html>
